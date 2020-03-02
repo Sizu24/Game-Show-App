@@ -1,6 +1,8 @@
 /* Main styles */
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&Roboto:300");
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&Roboto:300');
+
 /* Variables */
+
 :root {
   --color-win: #78CF82;
   --color-lose: #D94545;
@@ -15,6 +17,7 @@
 }
 
 /* main */
+
 * {
   box-sizing: border-box;
 }
@@ -34,7 +37,7 @@ li, ol, ul {
 h2 {
   margin: 0;
   text-transform: uppercase;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: var(--font-size-large);
   margin: 0;
 }
@@ -42,7 +45,7 @@ h2 {
 button {
   margin: 6px;
   border: 1px solid transparent;
-  padding: 0.5rem 1rem;
+  padding: .5rem 1rem;
   color: var(--color-keys);
   font-size: var(--font-size-medium);
   background-color: var(--color-keys-light);
@@ -67,11 +70,13 @@ button {
 }
 
 /* Title */
+
 .header {
   color: var(--color-start);
 }
 
 /* Phrase */
+
 .letter {
   font-size: var(--font-size-medium);
   height: 65px;
@@ -93,6 +98,7 @@ button {
 }
 
 /* Keyboard */
+
 .keyrow {
   display: flex;
   justify-content: center;
@@ -114,6 +120,7 @@ button {
 }
 
 /* Overlay */
+
 #overlay {
   display: flex;
   flex-direction: column;
@@ -154,5 +161,3 @@ button {
 .lose a {
   color: var(--color-lose);
 }
-
-/*# sourceMappingURL=styles.css.map */
