@@ -1,5 +1,5 @@
 // Global variables
-const qwerty = document.querySelector("#querty");
+const qwerty = document.querySelector("#qwerty");
 const phrase = document.querySelector("#phrase");
 const ul = phrase.firstElementChild;
 let missed = 0;
@@ -44,5 +44,36 @@ const addPhraseToDisplay = (arr)=>{
     }
   }
 }
+
+// run function
 addPhraseToDisplay(randomArray);
+
+// check to see if letter matched picked letter by user
+const checkLetter = (pickedLetter) =>{
+
+  const letters = document.querySelectorAll(".letter");
+
+  letters.forEach(letter =>{
+
+    if(letter.textContent.toLowerCase() === pickedLetter.toLowerCase()){
+      console.log(pickedLetter);
+      letter.className = "show";
+      return letter;
+
+    }else{
+      return null;
+    }
+  });
+}
+
+// Event listener for picked letter
+qwerty.addEventListener('click', (e) =>{
+  if(e.target.tagName === "BUTTON"){
+    const button = e.target;
+    button.className = "chosen";
+    button.disabled = true;
+    const letter = button.textContent;
+    const letterFound = checkLetter(letter);
+  }
+});
 
