@@ -49,31 +49,37 @@ const addPhraseToDisplay = (arr)=>{
 addPhraseToDisplay(randomArray);
 
 // check to see if letter matched picked letter by user
-const checkLetter = (pickedLetter) =>{
+const checkLetter = (pickedLetter) =>{  
+  const list = ul.querySelectorAll(".letter");
+  let matchedLetter = "";
 
-  const letters = document.querySelectorAll(".letter");
-
-  letters.forEach(letter =>{
-
+  list.forEach(letter =>{
     if(letter.textContent.toLowerCase() === pickedLetter.toLowerCase()){
-      console.log(pickedLetter);
-      letter.className = "show";
-      return letter;
-
-    }else{
-      return null;
+      letter.className = "show letter";
+      matchedLetter = letter.textContent;
     }
   });
+
+  if(matchedLetter !== ""){
+    return matchedLetter;
+  }else{
+    return null;
+  }
 }
 
 // Event listener for picked letter
 qwerty.addEventListener('click', (e) =>{
   if(e.target.tagName === "BUTTON"){
+    let tries = document.querySelector(".tries");
+    let ol = tries.parentNode;
     const button = e.target;
     button.className = "chosen";
     button.disabled = true;
     const letter = button.textContent;
-    const letterFound = checkLetter(letter);
+    let letterFound = checkLetter(letter);
+    if(letterFound === null){
+      ol.removeChild(tries);
+      missed += 1;
+    }
   }
 });
-
