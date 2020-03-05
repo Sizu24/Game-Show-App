@@ -55,7 +55,10 @@ const checkLetter = (pickedLetter) =>{
 
   list.forEach(letter =>{
     if(letter.textContent.toLowerCase() === pickedLetter.toLowerCase()){
-      letter.className = "show letter";
+      letter.className = "show letter effect";
+      setTimeout(()=>{
+        letter.className = "show letter";
+      }, 300);
       matchedLetter = letter.textContent;
     }
   });
@@ -81,5 +84,25 @@ qwerty.addEventListener('click', (e) =>{
       ol.removeChild(tries);
       missed += 1;
     }
+    checkWin();
   }
 });
+
+const checkWin = ()=>{
+  const letters = document.querySelectorAll(".letter");
+  const show = document.querySelectorAll(".show");
+  //check if letters with class show === letters with class letters
+  if(letters.length === show.length){
+    console.log('win');
+  }
+  if(missed >= 5){
+    const paragraph = document.createElement("p");
+    const title = overlay.firstElementChild;
+    paragraph.textContent = "Sorry you lose!";
+    overlay.className = "lose";
+    overlay.style.display = "";
+    overlay.insertBefore(paragraph, title);
+  }
+}
+
+//transition css for button

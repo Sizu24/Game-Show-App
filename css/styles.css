@@ -89,7 +89,7 @@ button {
 
 .show {
   color: #000;
-  background-color: #76CE82;
+  background-color: #D2D2D2;
 }
 
 /* Keyboard */
@@ -155,4 +155,13 @@ button {
   color: var(--color-lose);
 }
 
-/*# sourceMappingURL=styles.css.map */
+/* transition */
+.effect {
+  transition-duration: 200ms;
+  transform: scale(1.1);
+  background-color: #76CE82;
+}
+
+.show {
+  transition-duration: 200ms;
+}
