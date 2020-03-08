@@ -1,9 +1,11 @@
 // Global variables
 const qwerty = document.querySelector("#qwerty");
 const phrase = document.querySelector("#phrase");
+const overlay = document.querySelector("#overlay");
 const ul = phrase.firstElementChild;
 let missed = 0;
-const overlay = document.querySelector("#overlay");
+
+// Phrases
 let phrasesArray = [
   "I am Groot",
   "Why so serious",
@@ -12,53 +14,37 @@ let phrasesArray = [
   "May the force be with you"
 ];
 
-// Start game
 overlay.addEventListener("click", (e)=>{
+  /* 
+    * Checks to see if "Start Game" button is pressed
+    * Fade out overlay screen to reveal game board
+    * Add random phrase to screen 
+  */
   if(e.target.tagName === "A"){
-    overlay.style.display = "none";
+    $(overlay).fadeOut(); // overlay.style.display = "none";
+    overlay.lastElementChild.remove(); // prevents multiple taps & adding extra phrases
+    addPhraseToDisplay(getRandomPhraseAsArray());
   }
-  addPhraseToDisplay(getRandomPhraseAsArray());
 });
-// restart game
-const restartGame = ()=>{
-  const startButton = overlay.lastElementChild;
-  startButton.textContent = "Play again!";
-  overlay.addEventListener("click", (e)=>{
-    if(e.target.tagName === "A"){
-      overlay.style.display = "none";
-      const chosen = document.querySelectorAll(".chosen");
-      for(let i = 0; i < chosen.length; i += 1){
-        chosen[i].className = "";
-        chosen[i].disabled = false;
-      }
 
-      while(ul.firstElementChild){
-        ul.removeChild(ul.firstElementChild);
-      }
-
-      // remove win/lose message
-      if(overlay.firstElementChild.tagName === "P"){
-        overlay.firstElementChild.remove();
-      }
-      missed = 0;
-      createHearts();
-      const randArray = getRandomPhraseAsArray();
-      addPhraseToDisplay(randArray);
-    }
-  });
-}
-// Get a random phrase, and split into characters in new array
 const getRandomPhraseAsArray = ()=>{
+  /* 
+    * Get a random phrase, and split into characters in new array
+    * Return new array.
+  */
   let newPhrase = [];
   let randNum = Math.floor(Math.random() * phrasesArray.length);
   newPhrase = phrasesArray[randNum].split("");
   return newPhrase;  
 }
 
-getRandomPhraseAsArray();
-// Create Li items for each letter, and add letter class to each letter
 const addPhraseToDisplay = (arr)=>{
-
+  /* 
+    * Take in array of letters from random phrase
+    * Create li elements for each letter and add to ul
+    * Add "letter" class to each li that contains a letter
+    * Else add "space" class if no letters
+  */
   for(let i = 0; i < arr.length; i += 1){
     const li = document.createElement("li");
     li.textContent = arr[i];
@@ -71,14 +57,15 @@ const addPhraseToDisplay = (arr)=>{
   }
 }
 
-// run function
-
-// check to see if letter matched picked letter by user
-const checkLetter = (pickedLetter) =>{  
-  const list = ul.querySelectorAll(".letter");
+const checkLetter = (pickedLetter)=>{  
+  /* 
+    * Function to check if any letters in phrase matches the picked letter by user
+    * Add and remove "effect" class to matched letter for transition effect when correct letter
+  */
+  const letterClass = ul.querySelectorAll(".letter");
   let matchedLetter = "";
 
-  list.forEach(letter =>{
+  letterClass.forEach(letter =>{
     if(letter.textContent.toLowerCase() === pickedLetter.toLowerCase()){
       letter.className = "show letter effect";
       setTimeout(()=>{
@@ -87,7 +74,7 @@ const checkLetter = (pickedLetter) =>{
       matchedLetter = letter.textContent;
     }
   });
-
+  // return matchedLetter for qwerty event listener below
   if(matchedLetter !== ""){
     return matchedLetter;
   }else{
@@ -95,8 +82,15 @@ const checkLetter = (pickedLetter) =>{
   }
 }
 
-// Event listener for picked letter
-qwerty.addEventListener('click', (e) =>{
+qwerty.addEventListener('click', (e)=>{
+  /* 
+    * Event listener for letter picked by user
+    * Disables the letter that he user picks
+    * Takes returned letter from checkedLetter function,
+      and checks to see if letter correct
+    * If not, removes a heart, and adds 1 to "missed" count
+    * Run checkWin function
+  */
   if(e.target.tagName === "BUTTON"){
     let tries = document.querySelector(".tries");
     let ol = tries.parentNode;
@@ -113,32 +107,67 @@ qwerty.addEventListener('click', (e) =>{
   }
 });
 
-const winOrLoseMessage = (message, result) =>{
+const winOrLoseMessage = (message, result)=>{
+  /* 
+    * Message to display after win or loss
+    * Takes in message parameter, and result for win or loss
+    * Fades in overlay to display win or loss message above game title
+  */
   const paragraph = document.createElement("p");
   const title = overlay.firstElementChild;
-  paragraph.textContent = message;
+  paragraph.className= "message";
+  paragraph.innerHTML = message;
   overlay.className = result;
-  overlay.style.display = "";
+  $(overlay).fadeIn();  // overlay.style.display = "";
   overlay.insertBefore(paragraph, title);
 }
 
+// Replace "Start Game" link with "Play Again!" button
+const replaceButton = ()=>{
+  const startButton = overlay.lastElementChild;
+  startButton.remove();
+  const restartButton = document.createElement("button");
+  restartButton.textContent = "Play Again!";
+  restartButton.className = "reset";
+  overlay.appendChild(restartButton);
+}
+
+// Function to check if all letters are revealed
 const checkWin = ()=>{
+
+  replaceButton();
+
   const letters = document.querySelectorAll(".letter");
   const show = document.querySelectorAll(".show");
-  //check if letters with class show === letters with class letters
+
+  // Check if number of shown letters matches number of total letters in phrase
   if(letters.length === show.length){
+
+    // Add "winner" class to each letter to show letters in green box after all letters correct
     setTimeout(()=>{
-      winOrLoseMessage("Congratulations! You win!", "win");
+      for(let i = 0; i < letters.length; i += 1){
+        letters[i].className = "letter show winner";
+      }
+    }, 500); // <- This delay has to be longer than delay for transition in "checkLetter" function
+    
+    // Show win screen and take off "winner" class name
+    setTimeout(()=>{
+      for(let i = 0; i < letters.length; i += 1){
+        letters[i].className = "letter show";
+      }
+      winOrLoseMessage("<p>Congratulations! You win! &#128513;</p>", "win");
       restartGame();
-    }, 1000);   
+    }, 2500);   
   }
+
+  // Show lose screen
   if(missed >= 5){
-    winOrLoseMessage("Sorry, you lose!", "lose");
+    winOrLoseMessage("<p>Sorry, you lose &#128542;</p>", "lose");
     restartGame();
   }
 }
 
-// create hearts
+// Create new set of hearts by checking how many hearts are missing
 const createHearts = ()=>{
   const heartsList = document.querySelector("#scoreboard").firstElementChild;
   const heartsNeeded = 5 - heartsList.children.length;
@@ -158,3 +187,38 @@ const createHearts = ()=>{
   }
 }
 
+// Restart game function
+const restartGame = ()=>{
+
+  // Event listener function if "Play Again" button is pressed
+  overlay.addEventListener("click", (e)=>{
+    if(e.target.tagName === "BUTTON"){
+
+      // fade out win/loss screen
+      $(overlay).fadeOut();
+
+      // reset selected keys on keyboard, and make those keys selectable
+      const chosenKey = document.querySelectorAll(".chosen");
+      for(let i = 0; i < chosenKey.length; i += 1){
+        chosenKey[i].className = "";
+        chosenKey[i].disabled = false;
+      }
+
+      // remove old phrase
+      while(ul.firstElementChild){
+        ul.removeChild(ul.firstElementChild);
+      }
+
+      // remove the win/lose message
+      if(overlay.firstElementChild.tagName === "P"){
+        overlay.firstElementChild.remove();
+      }
+
+      // reset hearts and missed count
+      // add new phrase to screen
+      missed = 0;
+      createHearts();
+      addPhraseToDisplay(getRandomPhraseAsArray());
+    }
+  });
+}

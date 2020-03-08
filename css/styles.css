@@ -155,7 +155,29 @@ button {
   color: var(--color-lose);
 }
 
-/* transition */
+/* win/loss message */
+.message {
+  font-size: 2em;
+}
+
+/* reset button */
+.reset { 
+  padding: 8px;
+  margin: 50px auto;
+  background: #FFFFFF;
+  border-radius: 5px;
+  font-size: var(--font-size-medium);
+}
+
+.win button {
+  color: var(--color-win);
+}
+
+.lose button {
+  color: var(--color-lose);
+}
+
+/* transitions */
 .effect {
   transition-duration: 200ms;
   transform: scale(1.1);
@@ -165,4 +187,9 @@ button {
 .show {
   transition-duration: 200ms;
 }
-
+.winner {
+  transition-duration: 200ms;
+  transform: scale(1.1);
+  background-color: #76CE82;
+  margin: 5px;
+}
