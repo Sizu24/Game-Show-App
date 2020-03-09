@@ -36,7 +36,7 @@ overlay.addEventListener("click", (e)=>{
     addPhraseToDisplay(getRandomPhraseAsArray());
     setTimeout(()=>{
       playAgainButton();
-    }, 500); // delay to change button because overlay takes time to fades out 
+    }, 500); // delay to change button because overlay takes time to fade out 
   }
 });
 
