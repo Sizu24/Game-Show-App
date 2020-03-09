@@ -155,12 +155,12 @@ button {
   color: var(--color-lose);
 }
 
-/* win/loss message */
+/* Win/Loss Message */
 .message {
   font-size: 2em;
 }
 
-/* reset button */
+/* Reset Button */
 .reset { 
   padding: 8px;
   margin: 50px auto;
@@ -177,7 +177,7 @@ button {
   color: var(--color-lose);
 }
 
-/* transitions */
+/* Transitions */
 .effect {
   transition-duration: 200ms;
   transform: scale(1.1);
@@ -192,4 +192,9 @@ button {
   transform: scale(1.1);
   background-color: #76CE82;
   margin: 5px;
+}
+/* Hearts */
+img {
+  height: 35px;
+  width: 30px;
 }
